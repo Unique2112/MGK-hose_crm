@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        @page { size: A4; margin: 1cm; }
+        body { font-family: Helvetica; font-size: 10pt; }
+        .header { text-align: center; border-bottom: 2px solid red; padding-bottom: 10px; margin-bottom: 20px; }
+        .content-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .content-table th, .content-table td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        .content-table th { background-color: #f2f2f2; }
+        .totals { margin-top: 20px; text-align: right; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2 style="color: #1a237e;">MGK MAKONNEN ETHIOPIA PLC</h2>
+        <p>TIN: 0000018029 | Tel: 0114341055</p>
+        <hr>
+        <h3>PROFORMA INVOICE</h3>
+    </div>
+
+    <p><strong>To:</strong> {{ proforma.customer_name }}</p>
+    <p><strong>Ref No:</strong> {{ proforma.id }}</p>
+
+    <table class="content-table">
+        <thead>
+            <tr>
+                <th>DESCRIPTION</th>
+                <th>QTY</th>
+                <th>PRICE</th>
+                <th>TOTAL</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.price }}</td>
+                <td>{{ item.total }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="totals">
+        <p>Subtotal: {{ proforma.subtotal }}</p>
+        <p>VAT (15%): {{ proforma.vat_amount }}</p>
+        <p><strong>Grand Total: {{ proforma.total_amount }} ETB</strong></p>
+    </div>
+</body>
+</html>
