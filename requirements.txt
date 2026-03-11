@@ -1,0 +1,5 @@
+django
+gunicorn
+xhtml2pdf
+svglib
+reportlab
