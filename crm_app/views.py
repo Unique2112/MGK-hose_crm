@@ -1,4 +1,8 @@
-from xhtml2pdf import pisa
+try:
+    from xhtml2pdf import pisa
+except ImportError:
+    pisa = None
+
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Count
 from django.http import HttpResponse, JsonResponse
@@ -25,23 +29,20 @@ def get_customer_by_tin(request):
         if customer:
             data = {'exists': True, 'company_name': customer.company_name}
     return JsonResponse(data)
-# ... ሌሎች ፈንክሽኖች እዚህ ይኖራሉ ...
 
 def print_proforma(request, pk):
+    if pisa is None:
+        return HttpResponse('PDF generating library is not installed on this server.', status=500)
+        
     proforma = get_object_or_404(Proforma, pk=pk)
-
-    # 1. እቃዎቹን (items) ከዳታቤዝ መሳብ (በጣም ወሳኝ)
     items = proforma.items.all()
 
-    # 2. ለ HTML ፋይሉ ዳታውን መላክ
     context = {
         'proforma': proforma,
         'items': items,
     }
 
     response = HttpResponse(content_type='application/pdf')
-
-    # 3. የፋይል ስም ስህተቱን ለማስተካከል (proforma_no ወደ id ተቀይሯል)
     response['Content-Disposition'] = f'attachment; filename="proforma_{proforma.id}.pdf"'
 
     template_path = 'crm_app/proforma_pdf.html'
