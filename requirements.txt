@@ -1,4 +1,5 @@
 django
 gunicorn
-xhtml2pdf
-reportlab
+django-crispy-forms
+crispy-bootstrap5
+python-dotenv
