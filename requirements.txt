@@ -5,4 +5,3 @@ crispy-bootstrap5
 pillow
 python-dotenv
 django-import-export
-django-import-export==3.3.3
