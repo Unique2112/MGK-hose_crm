@@ -5,3 +5,4 @@ crispy-bootstrap5
 pillow
 python-dotenv
 django-import-export
+xhtml2pdf
