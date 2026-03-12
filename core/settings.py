@@ -99,6 +99,8 @@ try:
     ]
 except ImportError:
     pass
-
+CSRF_TRUSTED_ORIGINS = [
+    'https://mgk-hosecrm-production.up.railway.app',
+]
 SESSION_COOKIE_AGE = 300
 SESSION_SAVE_EVERY_REQUEST = True
