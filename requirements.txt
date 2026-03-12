@@ -5,4 +5,5 @@ crispy-bootstrap5
 pillow
 python-dotenv
 django-import-export
-xhtml2pdf
+reportlab==4.2.2
+xhtml2pdf==0.2.16
