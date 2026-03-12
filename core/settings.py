@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-$p$07d-_)&8e1n1*8jt%@=#7%nintd298ocwda9gb8$%==dpsx
 DEBUG = True
 
 # ሁሉንም እንዲቀበል '*' ምልክት ተጠቀም ወይም የሰርቨሩን IP ጨምር
-ALLOWED_HOSTS = ['mgk.pythonanywhere.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 INSTALLED_APPS = [
