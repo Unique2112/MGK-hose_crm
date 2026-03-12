@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-$p$07d-_)&8e1n1*8jt%@=#7%nintd298ocwda9gb8$%==dpsx
 DEBUG = True
 
 # ሁሉንም እንዲቀበል '*' ምልክት ተጠቀም ወይም የሰርቨሩን IP ጨምር
-ALLOWED_HOSTS = ['mgk.pythonanywhere.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 INSTALLED_APPS = [
@@ -128,10 +128,14 @@ admin.AdminSite.enable_nav_sidebar = True
 import import_export.formats.base_formats
 
 # ከዚያ ዝርዝሩን እንዲህ ብቻ ጻፈው
-IMPORT_EXPORT_FORMATS = [
-    import_export.formats.base_formats.CSV,
-    import_export.formats.base_formats.XLSX
-]
+try:
+    import import_export.formats.base_formats
+    IMPORT_EXPORT_FORMATS = [
+        import_export.formats.base_formats.CSV,
+        import_export.formats.base_formats.XLSX
+    ]
+except ImportError:
+    pass
 IMPORT_EXPORT_FORMATS = [import_export.formats.base_formats.CSV, import_export.formats.base_formats.XLSX]
 # ለ5 ደቂቃ (300 ሰከንድ) ምንም ካልተሰራ በራሱ Logout እንዲያደርግ
 SESSION_COOKIE_AGE = 300
