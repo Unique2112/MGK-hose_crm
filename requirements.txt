@@ -2,8 +2,4 @@ django
 gunicorn
 django-crispy-forms
 crispy-bootstrap5
-pillow
 python-dotenv
-django-import-export
-reportlab==4.2.2
-xhtml2pdf==0.2.16
