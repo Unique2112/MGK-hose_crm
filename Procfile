@@ -1,1 +1,1 @@
-web: gunicorn hose_crm.wsgi
+web: gunicorn core.wsgi
