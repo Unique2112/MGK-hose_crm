@@ -125,7 +125,6 @@ from django.contrib import admin
 admin.AdminSite.enable_nav_sidebar = True
 # Excel (xlsx) እንዲሰራ የሚፈቅድ ኮድ
 # መጀመሪያ ከላይ እነዚህን መስመሮች መኖራቸውን አረጋግጥ
-import import_export.formats.base_formats
 
 # ከዚያ ዝርዝሩን እንዲህ ብቻ ጻፈው
 try:
@@ -136,7 +135,6 @@ try:
     ]
 except ImportError:
     pass
-IMPORT_EXPORT_FORMATS = [import_export.formats.base_formats.CSV, import_export.formats.base_formats.XLSX]
 # ለ5 ደቂቃ (300 ሰከንድ) ምንም ካልተሰራ በራሱ Logout እንዲያደርግ
 SESSION_COOKIE_AGE = 300
 SESSION_SAVE_EVERY_REQUEST = True
