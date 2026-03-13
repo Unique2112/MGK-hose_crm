@@ -83,6 +83,7 @@ admin.site.index_title = "Welcome to MGK Sales Portal"
 @admin.register(HoseRecord)
 class HoseRecordAdmin(ImportExportModelAdmin):
     resource_class = HoseRecordResource
+    list_per_page = 1000  # በአንድ ገጽ ላይ 1000 ሪከርዶችን ያሳያል
     class Media:
         js = (
             'https://code.jquery.com/jquery-3.6.0.min.js',
