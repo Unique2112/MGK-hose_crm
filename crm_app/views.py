@@ -4,6 +4,8 @@ from django.template.loader import get_template
 from django.db.models import Count
 from xhtml2pdf import pisa
 from .models import Proforma, HoseRecord
+from django.shortcuts import render, get_object_or_404
+from .models import Proforma
 
 def dashboard(request):
     stats = HoseRecord.objects.values('status').annotate(total=Count('id'))
@@ -27,11 +29,7 @@ def get_customer_by_tin(request):
     return JsonResponse(data)
 
 def print_proforma(request, pk):
-    try:
-        import xhtml2pdf
-        return HttpResponse(f"ላይብረሪው ተጭኗል! Version: {xhtml2pdf.__version__}")
-    except ImportError:
-        return HttpResponse("ላይብረሪው አሁንም አልተጫነም! እባክህ Build Logs-ን እይ።")
-    except Exception as e:
-        return HttpResponse(f"ሌላ ስህተት: {str(e)}")
-        return HttpResponse(f'Error occurred: {str(e)}')
+    proforma = get_object_or_404(Proforma, pk=pk)
+    context = {'proforma': proforma}
+    # ይህ በቀጥታ የ HTML ገጽ ይከፍታል፣ ከዚያ በብራውዘርህ Print ትለዋለህ
+    return render(request, 'crm_app/proforma_pdf.html', context)
