@@ -127,6 +127,12 @@ class ProformaAdmin(ImportExportModelAdmin):
     readonly_fields = ('sub_total', 'vat_amount', 'total_amount')
 
     def print_button(self, obj):
+@admin.register(Product)
+class ProductAdmin(ImportExportModelAdmin):
+    list_display = ('name', 'category', 'quantity', 'unit_price')
+    search_fields = ('name', 'part_number')
+
+admin.site.register(Category)
         return format_html('<a class="button" href="/print-proforma/{}/" target="_blank" style="background-color: #D60420; color: white; padding: 5px 10px; border-radius: 4px;">Print PDF</a>', obj.pk)
 
     print_button.short_description = "Print PDF"
