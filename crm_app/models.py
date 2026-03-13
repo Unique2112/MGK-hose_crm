@@ -34,27 +34,36 @@ class HoseRecord(models.Model):
     def __str__(self):
         return f"{self.company_name} - {self.date}"
 class Proforma(models.Model):
-    proforma_no = models.CharField("Proforma Number", max_length=50, unique=True)
+    proforma_no = models.CharField("Reference No", max_length=50, unique=True) # ናሙናው ላይ 'Reference No' ይላል
     customer_name = models.CharField("Customer Name", max_length=200)
-    date = models.DateField("Date")
+    date = models.DateField("Date", auto_now_add=True)
+    
+    # ለናሙናው የተጨመሩ
+    validity = models.CharField("Validity", max_length=100, default="5 Days") # ከናሙናው
+    delivery = models.CharField("Delivery", max_length=100, default="Stock") # ከናሙናው
+    payment_terms = models.TextField("Payment Terms", blank=True, null=True) # ከናሙናው
+    
     sub_total = models.DecimalField("Sub Total (ETB)", max_digits=12, decimal_places=2, default=0, editable=False)
     vat_amount = models.DecimalField("VAT (15%)", max_digits=12, decimal_places=2, default=0, editable=False)
     total_amount = models.DecimalField("Grand Total (ETB)", max_digits=12, decimal_places=2, default=0, editable=False)
-    prepared_by = models.CharField("Prepared By", max_length=100)
-    terms_and_conditions = models.TextField("Terms", default="Validity: 3 days. Delivery: Immediate.")
+    
+    # ገንዘቡን በቃላት ለመጻፍ (Amount in Words)
+    amount_in_words = models.TextField("Amount In Word", blank=True, null=True) # ከናሙናው
 
     def update_totals(self):
         items_total = sum(item.total_price for item in self.items.all())
         self.sub_total = items_total
         self.vat_amount = (self.sub_total * Decimal('0.15')).quantize(Decimal('0.01'))
         self.total_amount = self.sub_total + self.vat_amount
+        # እዚህ ጋር update_totals ሲጠራ ሰላም እንዲያደርግ .save() እንጠቀማለን
         Proforma.objects.filter(pk=self.pk).update(
-            sub_total=self.sub_total, vat_amount=self.vat_amount, total_amount=self.total_amount
+            sub_total=self.sub_total, 
+            vat_amount=self.vat_amount, 
+            total_amount=self.total_amount
         )
 
     def __str__(self):
         return f"{self.proforma_no} - {self.customer_name}"
-
 # 2. ልጁ (ProformaItem)
 class ProformaItem(models.Model):
     proforma = models.ForeignKey(Proforma, related_name='items', on_delete=models.CASCADE)
