@@ -39,7 +39,7 @@ class Proforma(models.Model):
     date = models.DateField("Date", auto_now_add=True)
     
     # ለናሙናው የተጨመሩ
-    validity = models.CharField("Validity", max_length=100, default="5 Days") # ከናሙናው
+    validity = models.IntegerField(default=5)
     delivery = models.CharField("Delivery", max_length=100, default="Stock") # ከናሙናው
     payment_terms = models.TextField("Payment Terms", blank=True, null=True) # ከናሙናው
     
