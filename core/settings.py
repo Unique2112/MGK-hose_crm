@@ -23,6 +23,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'import_export', 
     'crm_app',
+    'crm_app',
+    'inventory',  # ይህ ሲጨመር ነው በጎን በኩል 'Inventory' የሚለው የሚመጣው
+    'import_export', # ይህ መኖሩን አረጋግጥ
 ]
 
 MIDDLEWARE = [
