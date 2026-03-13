@@ -67,7 +67,9 @@ class Proforma(models.Model):
 # 2. ልጁ (ProformaItem)
 class ProformaItem(models.Model):
     proforma = models.ForeignKey(Proforma, related_name='items', on_delete=models.CASCADE)
-    description = models.CharField("Item Description", max_length=255)
+    # ዕቃውን ከዳታቤዝህ እንዲመርጥ Foreign Key ብታደርገው ዋጋውን ራሱ ያመጣልዋል
+    product = models.ForeignKey(HoseRecord, on_delete=models.SET_NULL, null=True, blank=True) 
+    description = models.CharField("Item Description", max_length=255) # ካስፈለገ እጅህንም መጻፍ ትችላለህ
     quantity = models.PositiveIntegerField("Quantity", default=1)
     unit_price = models.DecimalField("Unit Price", max_digits=12, decimal_places=2)
     total_price = models.DecimalField("Total Price", max_digits=12, decimal_places=2, editable=False)
