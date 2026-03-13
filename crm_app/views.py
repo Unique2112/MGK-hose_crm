@@ -26,19 +26,21 @@ def get_customer_by_tin(request):
     return JsonResponse(data)
 
 def print_proforma(request, pk):
-    proforma = Proforma.objects.get(pk=pk)
-    template_path = 'crm_app/proforma_pdf.html' # ይህን ፋይል ቀጥለን እንፈጥራለን
-    context = {'proforma': proforma}
-    
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'filename="proforma_{proforma.proforma_no}.pdf"'
-    
-    template = get_template(template_path)
-    html = template.render(context)
+    try:
+        proforma = Proforma.objects.get(pk=pk)
+        template_path = 'crm_app/proforma_pdf.html'
+        context = {'proforma': proforma}
+        
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = f'filename="proforma_{proforma.proforma_no}.pdf"'
+        
+        template = get_template(template_path)
+        html = template.render(context)
 
-    # ፒዲኤፉን መፍጠር
-    pisa_status = pisa.CreatePDF(html, dest=response)
-    
-    if pisa_status.err:
-       return HttpResponse('PDF ላይ ስህተት ተከስቷል <pre>' + html + '</pre>')
-    return response
+        pisa_status = pisa.CreatePDF(html, dest=response)
+        
+        if pisa_status.err:
+           return HttpResponse(f'PDF Error: {pisa_status.err}')
+        return response
+    except Exception as e:
+        return HttpResponse(f'Error occurred: {str(e)}')
