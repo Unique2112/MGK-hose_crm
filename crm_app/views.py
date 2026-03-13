@@ -28,21 +28,10 @@ def get_customer_by_tin(request):
 
 def print_proforma(request, pk):
     try:
-        proforma = Proforma.objects.get(pk=pk)
-        template_path = 'crm_app/proforma_pdf.html'
-        context = {'proforma': proforma}
-        
-        response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = f'filename="proforma_{proforma.proforma_no}.pdf"'
-        
-        template = get_template(template_path)
-        html = template.render(context)
-
-        pisa_status = pisa.CreatePDF(html, dest=response)
-        
-        if pisa_status.err:
-           return HttpResponse(f'PDF Error: {pisa_status.err}')
-        return response
+        import xhtml2pdf
+        return HttpResponse(f"ላይብረሪው ተጭኗል! Version: {xhtml2pdf.__version__}")
+    except ImportError:
+        return HttpResponse("ላይብረሪው አሁንም አልተጫነም! እባክህ Build Logs-ን እይ።")
     except Exception as e:
-        # ላይብረሪው ካልተጫነ ትክክለኛውን ስህተት እዚህ ጋር ያሳየናል
+        return HttpResponse(f"ሌላ ስህተት: {str(e)}")
         return HttpResponse(f'Error occurred: {str(e)}')
