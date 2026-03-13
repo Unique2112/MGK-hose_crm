@@ -33,6 +33,19 @@ class HoseRecord(models.Model):
 
     def __str__(self):
         return f"{self.company_name} - {self.date}"
+class Category(models.Model):
+    name = models.CharField(max_length=100) # SDMO, Gates, TEU...
+    def __str__(self): return self.name
+
+class Product(models.Model):
+    part_number = models.CharField(max_length=100, unique=True) # PartNo
+    name = models.CharField(max_length=255) # Description
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    location = models.CharField(max_length=100, blank=True, null=True) # Location
+    quantity = models.IntegerField(default=0) # Balance
+    unit_price = models.DecimalField(max_digits=12, decimal_places=2) # Unit Price
+    
+    def __str__(self): return f"{self.part_number} - {self.name}"
 class Proforma(models.Model):
     proforma_no = models.CharField("Reference No", max_length=50, unique=True) # ናሙናው ላይ 'Reference No' ይላል
     customer_name = models.CharField("Customer Name", max_length=200)
