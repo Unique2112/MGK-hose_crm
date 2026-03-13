@@ -1,8 +1,9 @@
-from django.http import HttpResponse
+from django.shortcuts import render
+from django.http import HttpResponse, JsonResponse
 from django.template.loader import get_template
-from xhtml2pdf import pisa  # በቀጥታ እንዲህ ይሁን
-from .models import Proforma
-
+from django.db.models import Count
+from xhtml2pdf import pisa
+from .models import Proforma, HoseRecord
 
 def dashboard(request):
     stats = HoseRecord.objects.values('status').annotate(total=Count('id'))
@@ -43,4 +44,5 @@ def print_proforma(request, pk):
            return HttpResponse(f'PDF Error: {pisa_status.err}')
         return response
     except Exception as e:
+        # ላይብረሪው ካልተጫነ ትክክለኛውን ስህተት እዚህ ጋር ያሳየናል
         return HttpResponse(f'Error occurred: {str(e)}')
