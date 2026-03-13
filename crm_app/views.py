@@ -3,11 +3,11 @@ try:
 except ImportError:
     pisa = None
 
-from django.shortcuts import render, get_object_or_404
-from django.db.models import Count
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 from django.template.loader import get_template
-from .models import HoseRecord, Proforma
+from xhtml2pdf import pisa
+from .models import Proforma
+
 
 def dashboard(request):
     stats = HoseRecord.objects.values('status').annotate(total=Count('id'))
@@ -31,26 +31,19 @@ def get_customer_by_tin(request):
     return JsonResponse(data)
 
 def print_proforma(request, pk):
-    if pisa is None:
-        return HttpResponse('PDF generating library is not installed on this server.', status=500)
-        
-    proforma = get_object_or_404(Proforma, pk=pk)
-    items = proforma.items.all()
-
-    context = {
-        'proforma': proforma,
-        'items': items,
-    }
-
+    proforma = Proforma.objects.get(pk=pk)
+    template_path = 'crm_app/proforma_pdf.html' # ይህን ፋይል ቀጥለን እንፈጥራለን
+    context = {'proforma': proforma}
+    
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="proforma_{proforma.id}.pdf"'
-
-    template_path = 'crm_app/proforma_pdf.html'
+    response['Content-Disposition'] = f'filename="proforma_{proforma.proforma_no}.pdf"'
+    
     template = get_template(template_path)
     html = template.render(context)
 
+    # ፒዲኤፉን መፍጠር
     pisa_status = pisa.CreatePDF(html, dest=response)
-
+    
     if pisa_status.err:
-        return HttpResponse('Error generating PDF', status=400)
+       return HttpResponse('PDF ላይ ስህተት ተከስቷል <pre>' + html + '</pre>')
     return response
