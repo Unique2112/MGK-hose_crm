@@ -7,3 +7,6 @@ django-import-export
 whitenoise
 openpyxl
 tablib[xlsx]
+xhtml2pdf
+arabic-reshaper
+python-bidi
