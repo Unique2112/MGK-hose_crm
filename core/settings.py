@@ -23,8 +23,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'import_export', 
     'crm_app',
-    'crm_app',
-    'inventory',  # ይህ ሲጨመር ነው በጎን በኩል 'Inventory' የሚለው የሚመጣው
+    'inventory', # 'crm_app.inventory' ሳይሆን 'inventory' ብቻ መሆን አለበት
     'import_export', # ይህ መኖሩን አረጋግጥ
 ]
 
