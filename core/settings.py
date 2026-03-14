@@ -1,19 +1,9 @@
 import os
 from pathlib import Path
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-$p$07d-_)&8e1n1*8jt%@=#7%nintd298ocwda9gb8$%==dpsx'
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-# Railway ላይ እንዲሰራ '*' የግድ ያስፈልጋል
 ALLOWED_HOSTS = ['*']
-
-# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -21,10 +11,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'crm_app',    # እዚህ ጋ ኮማ (,) መኖሩን አረጋግጥ
-    'import_export', # ይህ መኖሩን አረጋግጥ
+    'crm_app',
+    'import_export',
 ]
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -35,9 +24,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
 ROOT_URLCONF = 'core.urls'
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -54,43 +41,31 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'core.wsgi.application'
-
-# Database
-# PythonAnywhere አድራሻን ወደ BASE_DIR ቀይረነዋል
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/app/data/db.sqlite3', # አዲሱ አድራሻ ይሄ ነው
+        'NAME': '/app/data/db.sqlite3', 
     }
 }
-
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
-
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
-
-# Static files
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-# Email Settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'uniqueuna7@gmail.com'
 EMAIL_HOST_PASSWORD = 'ijkbddehwzupgtqx'
-
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000
-
-# Import Export Settings (Safe Version)
 try:
     import import_export.formats.base_formats
     IMPORT_EXPORT_FORMATS = [
