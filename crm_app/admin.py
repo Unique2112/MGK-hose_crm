@@ -1,8 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
 from import_export.admin import ImportExportModelAdmin
-from .models import HoseRecord, Proforma, ProformaItem
-from .resources import HoseRecordResource
+from .models import HoseRecord, Proforma, ProformaItem, Product, Category
 from django.utils.safestring import mark_safe
 
 # ==========================================
@@ -82,39 +81,13 @@ admin.site.index_title = "Welcome to MGK Sales Portal"
 # ==========================================
 @admin.register(HoseRecord)
 class HoseRecordAdmin(ImportExportModelAdmin):
-    resource_class = HoseRecordResource
-    list_per_page = 1000  # በአንድ ገጽ ላይ 1000 ሪከርዶችን ያሳያል
-    class Media:
-        js = (
-            'https://code.jquery.com/jquery-3.6.0.min.js',
-            'js/tin_lookup.js',
-        )
-
     list_display = ('date', 'company_name', 'psi', 'colored_status', 'unit_price')
-    search_fields = ('company_name', 'machine_model', 'part_number')
-    list_filter = ('status', 'date', 'hose_size')
-
-    def get_export_fields(self, request, obj=None):
-        fields = super().get_export_fields(request, obj)
-        return [f for f in fields if f.column_name != 'colored_status']
-
+    search_fields = ('company_name', 'part_number')
+    
     def colored_status(self, obj):
         color = '#ffffff'
-        if obj.status == 'Sold':
-            background = '#28a745'
-        elif obj.status == 'Lost Sale':
-            background = '#dc3545'
-        else:
-            background = '#ffc107'
-            color = '#000000'
-        return format_html(
-            '<span style="color: {}; background-color: {}; padding: 5px 10px; border-radius: 5px; font-weight: bold; display: inline-block; min-width: 80px; text-align: center;">{}</span>',
-            color, background, obj.status
-        )
-    colored_status.short_description = 'Status'
-    colored_status.admin_order_field = 'status'
-from django.utils.html import format_html
-from import_export.admin import ImportExportModelAdmin
+        background = '#28a745' if obj.status == 'Sold' else '#dc3545'
+        return format_html('<span style="background: {}; color: {}; padding: 5px; border-radius: 5px;">{}</span>', background, color, obj.status)
 
 class ProformaItemInline(admin.TabularInline):
     model = ProformaItem
@@ -127,12 +100,12 @@ class ProformaAdmin(ImportExportModelAdmin):
     readonly_fields = ('sub_total', 'vat_amount', 'total_amount')
 
     def print_button(self, obj):
+        return format_html('<a class="button" href="/print-proforma/{}/" target="_blank">Print PDF</a>', obj.pk)
+
+# --- ይሄው Inventory እዚህ ጋር ተስተካክሏል ---
 @admin.register(Product)
 class ProductAdmin(ImportExportModelAdmin):
-    list_display = ('name', 'category', 'quantity', 'unit_price')
+    list_display = ('part_number', 'name', 'category', 'quantity', 'unit_price')
     search_fields = ('name', 'part_number')
 
 admin.site.register(Category)
-        return format_html('<a class="button" href="/print-proforma/{}/" target="_blank" style="background-color: #D60420; color: white; padding: 5px 10px; border-radius: 4px;">Print PDF</a>', obj.pk)
-
-    print_button.short_description = "Print PDF"
