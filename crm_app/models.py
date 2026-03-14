@@ -21,13 +21,13 @@ class HoseRecord(models.Model):
     status = models.CharField(max_length=20, choices=[('Sold', 'Sold'), ('Lost Sale', 'Lost Sale')], default='Sold')
     remark = models.TextField(blank=True, null=True)
 
-    def __str__(self):
+  def __str__(self):
         return f"{self.company_name} - {self.date}"
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
     def __str__(self): return self.name
-        
+
 class Product(models.Model):
     part_number = models.CharField(max_length=100, unique=True)
     name = models.CharField(max_length=255)
@@ -35,7 +35,7 @@ class Product(models.Model):
     location = models.CharField(max_length=100, blank=True, null=True)
     quantity = models.IntegerField(default=0)
     unit_price = models.DecimalField(max_digits=12, decimal_places=2)
-    def __str__(self): return f"{self.part_number} - {self.name}"
+    def __str__(self): return f"{self.part_number} - {self.name}""
 
 class Proforma(models.Model):
     proforma_no = models.CharField("Reference No", max_length=50, unique=True)
