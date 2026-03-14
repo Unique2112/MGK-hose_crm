@@ -3,6 +3,7 @@ from django.utils.html import format_html
 from import_export.admin import ImportExportModelAdmin
 from .models import HoseRecord, Proforma, ProformaItem, Product, Category
 from django.utils.safestring import mark_safe
+from .models import Product, Category
 
 # ==========================================
 # 1. የዳሽቦርዱ ገጽታ እና የዲዛይን ስራ (Header, CSS, JS)
@@ -102,10 +103,10 @@ class ProformaAdmin(ImportExportModelAdmin):
     def print_button(self, obj):
         return format_html('<a class="button" href="/print-proforma/{}/" target="_blank">Print PDF</a>', obj.pk)
 
-# --- ይሄው Inventory እዚህ ጋር ተስተካክሏል ---
 @admin.register(Product)
 class ProductAdmin(ImportExportModelAdmin):
     list_display = ('part_number', 'name', 'category', 'quantity', 'unit_price')
     search_fields = ('name', 'part_number')
+    list_filter = ('category',)
 
 admin.site.register(Category)
