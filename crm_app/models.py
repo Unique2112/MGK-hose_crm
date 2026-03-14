@@ -27,7 +27,7 @@ class HoseRecord(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=100)
     def __str__(self): return self.name
-
+        
 class Product(models.Model):
     part_number = models.CharField(max_length=100, unique=True)
     name = models.CharField(max_length=255)
