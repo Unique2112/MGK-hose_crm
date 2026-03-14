@@ -21,9 +21,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'import_export', 
     'crm_app',
-    'inventory', # 'crm_app.inventory' ሳይሆን 'inventory' ብቻ መሆን አለበት
+    'inventory',  # <--- ይሄ መኖሩን እና ኮማ (,) መጨረሻው ላይ መኖሩን አረጋግጥ
     'import_export', # ይህ መኖሩን አረጋግጥ
 ]
 
