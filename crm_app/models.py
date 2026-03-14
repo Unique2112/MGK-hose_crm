@@ -95,3 +95,15 @@ class ProformaItem(models.Model):
         self.total_price = Decimal(str(self.quantity)) * Decimal(str(self.unit_price))
         super().save(*args, **kwargs)
         self.proforma.update_totals()
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+    def __str__(self): return self.name
+
+class Product(models.Model):
+    part_number = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=255)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    location = models.CharField(max_length=100, blank=True, null=True)
+    quantity = models.IntegerField(default=0)
+    unit_price = models.DecimalField(max_digits=12, decimal_places=2)
+    def __str__(self): return f"{self.part_number} - {self.name}"
