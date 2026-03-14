@@ -46,10 +46,14 @@ class Product(models.Model):
     unit_price = models.DecimalField(max_digits=12, decimal_places=2) # Unit Price
     
     def __str__(self): return f"{self.part_number} - {self.name}"
-class Proforma(models.Model):
-    proforma_no = models.CharField("Reference No", max_length=50, unique=True) # ናሙናው ላይ 'Reference No' ይላል
-    customer_name = models.CharField("Customer Name", max_length=200)
-    date = models.DateField("Date", auto_now_add=True)
+class ProformaItem(models.Model):
+    proforma = models.ForeignKey(Proforma, related_name='items', on_delete=models.CASCADE)
+    # HoseRecord ሳይሆን Product እንዲሆን ተቀይሯል
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True) 
+    description = models.CharField("Item Description", max_length=255)
+    quantity = models.PositiveIntegerField("Quantity", default=1)
+    unit_price = models.DecimalField("Unit Price", max_digits=12, decimal_places=2)
+    total_price = models.DecimalField("Total Price", max_digits=12, decimal_places=2, editable=False)
     
     # ለናሙናው የተጨመሩ
     validity = models.IntegerField(default=5)
