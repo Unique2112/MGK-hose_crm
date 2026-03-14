@@ -22,7 +22,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crm_app',    # እዚህ ጋ ኮማ (,) መኖሩን አረጋግጥ
-    'inventory',  # <--- አዲሱ መስመር እንዲህ ለብቻው ይሁን
     'import_export', # ይህ መኖሩን አረጋግጥ
 ]
 
