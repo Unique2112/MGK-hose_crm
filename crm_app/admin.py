@@ -10,15 +10,18 @@ class HoseRecordAdmin(ImportExportModelAdmin):
     list_display = ('date', 'company_name', 'status', 'unit_price')
     search_fields = ('company_name', 'part_number')
 
+# 1. መጀመሪያ ኢንላይኑን (Inline) እንገልጻለን
 class ProformaItemInline(admin.TabularInline):
     model = ProformaItem
     extra = 1
 
+# 2. ከዚያ ፕሮፎርማውን እንመዘግባለን
 @admin.register(Proforma)
 class ProformaAdmin(ImportExportModelAdmin):
     list_display = ('proforma_no', 'customer_name', 'date', 'total_amount')
     inlines = [ProformaItemInline]
 
+# 3. በመጨረሻ አዲሶቹን እቃዎች (Products)
 @admin.register(Product)
 class ProductAdmin(ImportExportModelAdmin):
     list_display = ('part_number', 'name', 'category', 'quantity', 'unit_price')
