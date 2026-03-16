@@ -16,8 +16,8 @@ def print_proforma(request, pk):
         'items': items,
         'vat_amount': round(vat_amount, 2),
         'grand_total': round(grand_total, 2),
-        'website': 'mgkmakonnen.com',
-        'email': 'mgkethiopia@gmail.com',
+        'website': 'mgkmakonnen.com', #
+        'email': 'mgkethiopia@gmail.com', #
     }
     
     # ቀጥታ ገጹን ለብሮውዘር ይሰጣል፤ ብሮውዘሩ እንዲያትመው ያደርጋል
