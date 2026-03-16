@@ -17,19 +17,17 @@ def print_proforma(request, pk):
     proforma = get_object_or_404(Proforma, pk=pk)
     items = ProformaItem.objects.filter(proforma=proforma)
     
+    # የሂሳብ ስሌቶች
+    subtotal = proforma.total_amount or 0
+    vat_amount = float(subtotal) * 0.15
+    grand_total = float(subtotal) + vat_amount
+
     context = {
         'proforma': proforma,
         'items': items,
-        'grand_total': proforma.total_amount, # ለጊዜው ቀለል ባለ ስሌት
+        'vat_amount': round(vat_amount, 2),
+        'grand_total': round(grand_total, 2),
+        'website': 'mgkmakonnen.com',
+        'email': 'mgkethiopia@gmail.com',
     }
-
-    template = get_template('crm_app/proforma_pdf.html')
-    html = template.render(context)
-    result = BytesIO()
-    
-    # PDF የመፍጠር ሂደት
-    pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
-    
-    if not pdf.err:
-        return HttpResponse(result.getvalue(), content_type='application/pdf')
-    return HttpResponse("Error generating PDF", status=500)
+    return render(request, 'crm_app/proforma_pdf.html', context)
