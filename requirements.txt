@@ -10,5 +10,3 @@ tablib[xlsx]
 xhtml2pdf
 arabic-reshaper
 python-bidi
-xhtml2pdf==0.2.11
-reportlab==3.6.12
