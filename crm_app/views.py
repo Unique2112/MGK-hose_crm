@@ -1,23 +1,12 @@
-import xhtml2pdf.pisa as pisa
-from io import BytesIO
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
 from .models import Proforma, ProformaItem
-from xhtml2pdf import pisa
-from django.template.loader import get_template
-from decimal import Decimal
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
-from .models import Proforma, ProformaItem
-from xhtml2pdf import pisa
-from django.template.loader import get_template
-from io import BytesIO
 
 def print_proforma(request, pk):
+    # ዳታውን ከዳታቤዝ እናመጣለን
     proforma = get_object_or_404(Proforma, pk=pk)
     items = ProformaItem.objects.filter(proforma=proforma)
     
-    # ቫት እና ጠቅላላ ድምር ስሌት
+    # የሂሳብ ስሌቶች (ምንም አይነት የፒዲኤፍ ላይብረሪ አያስፈልግም)
     subtotal = proforma.total_amount or 0
     vat_amount = float(subtotal) * 0.15
     grand_total = float(subtotal) + vat_amount
@@ -30,5 +19,6 @@ def print_proforma(request, pk):
         'website': 'mgkmakonnen.com',
         'email': 'mgkethiopia@gmail.com',
     }
-    # ፒዲኤፍ ከመፍጠር ይልቅ ቀጥታ ገጹን ለብሮውዘር ይሰጣል
+    
+    # ቀጥታ ገጹን ለብሮውዘር ይሰጣል፤ ብሮውዘሩ እንዲያትመው ያደርጋል
     return render(request, 'crm_app/proforma_pdf.html', context)
