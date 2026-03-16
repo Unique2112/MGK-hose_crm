@@ -1,35 +1,37 @@
-from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
-from django.template.loader import get_template
-from django.db.models import Count
-from xhtml2pdf import pisa
-from .models import Proforma, HoseRecord
 from django.shortcuts import render, get_object_or_404
-from .models import Proforma
-
-def dashboard(request):
-    stats = HoseRecord.objects.values('status').annotate(total=Count('id'))
-    lost_reasons = HoseRecord.objects.filter(status='Lost Sale').values('lost_reason').annotate(total=Count('id'))
-    size_stats = HoseRecord.objects.filter(status='Sold').values('hose_size').annotate(total=Count('id'))
-
-    context = {
-        'stats': stats,
-        'lost_reasons': lost_reasons,
-        'size_stats': size_stats,
-    }
-    return render(request, 'crm_app/dashboard.html', context)
-
-def get_customer_by_tin(request):
-    tin = request.GET.get('tin', None)
-    data = {'exists': False, 'company_name': ''}
-    if tin:
-        customer = HoseRecord.objects.filter(tin_number=tin).last()
-        if customer:
-            data = {'exists': True, 'company_name': customer.company_name}
-    return JsonResponse(data)
+from django.http import HttpResponse
+from .models import Proforma, ProformaItem
+from xhtml2pdf import pisa
+from django.template.loader import get_template
+from decimal import Decimal
 
 def print_proforma(request, pk):
     proforma = get_object_or_404(Proforma, pk=pk)
-    context = {'proforma': proforma}
-    # ይህ በቀጥታ የ HTML ገጽ ይከፍታል፣ ከዚያ በብራውዘርህ Print ትለዋለህ
-    return render(request, 'crm_app/proforma_pdf.html', context)
+    items = ProformaItem.objects.filter(proforma=proforma)
+    
+    # የሂሳብ ስሌቶች
+    subtotal = proforma.total_amount or Decimal('0.00')
+    vat_amount = subtotal * Decimal('0.15')
+    grand_total = subtotal + vat_amount
+
+    context = {
+        'proforma': proforma,
+        'items': items,
+        'vat_amount': round(vat_amount, 2),
+        'grand_total': round(grand_total, 2),
+        'website': 'mgkmakonnen.com',
+        'email': 'mgkethiopia@gmail.com',
+    }
+
+    # PDF የመፍጠር ሂደት
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'filename="proforma_{proforma.proforma_no}.pdf"'
+    
+    template = get_template('crm_app/proforma_pdf.html')
+    html = template.render(context)
+
+    pisa_status = pisa.CreatePDF(html, dest=response)
+    
+    if pisa_status.err:
+        return HttpResponse('PDF Error', status=500)
+    return response
