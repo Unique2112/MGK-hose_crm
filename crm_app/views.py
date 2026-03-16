@@ -30,5 +30,5 @@ def print_proforma(request, pk):
         'website': 'mgkmakonnen.com',
         'email': 'mgkethiopia@gmail.com',
     }
-    # ቀጥታ HTML ገጹን ያሳያል
+    # ፒዲኤፍ ከመፍጠር ይልቅ ቀጥታ ገጹን ለብሮውዘር ይሰጣል
     return render(request, 'crm_app/proforma_pdf.html', context)
