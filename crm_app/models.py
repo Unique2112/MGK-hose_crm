@@ -1,43 +1,34 @@
 from django.db import models
 
-# 1. የዕቃዎችን ዓይነት ለመለየት (ለምሳሌ፡ Hose, Fitting)
 class Category(models.Model):
     name = models.CharField(max_length=100)
-
     def __str__(self):
         return self.name
 
-    class Meta:
-        verbose_name_plural = "Categories"
+class HoseRecord(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    hose_type = models.CharField(max_length=100) # ለምሳሌ R1, R2
+    size = models.CharField(max_length=50)      # ለምሳሌ 1/2, 3/4
+    quantity = models.FloatField(default=0)
+    unit = models.CharField(max_length=20, default="Meter")
+    updated_at = models.DateTimeField(auto_now=True)
 
-# 2. የዕቃዎችን ዝርዝር ለመመዝገብ
+    def __str__(self):
+        return f"{self.hose_type} - {self.size}"
+
 class Product(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
     name = models.CharField(max_length=200)
-    description = models.TextField(blank=True, null=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stock_quantity = models.IntegerField(default=0)
-    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name
 
-# 3. የደንበኞችን መረጃ ለመያዝ
-class Customer(models.Model):
-    name = models.CharField(max_length=200)
-    phone = models.CharField(max_length=20, blank=True, null=True)
-    email = models.EmailField(blank=True, null=True)
-    address = models.TextField(blank=True, null=True)
-
-    def __str__(self):
-        return self.name
-
-# 4. የፕሮፎርማ (Proforma Invoice) መረጃ
 class Proforma(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    customer_name = models.CharField(max_length=200)
     date = models.DateTimeField(auto_now_add=True)
-    total_amount = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
-    is_confirmed = models.BooleanField(default=False)
+    total_amount = models.DecimalField(max_digits=12, decimal_places=2, default=0)
 
     def __str__(self):
-        return f"Proforma #{self.id} - {self.customer.name}"
+        return f"Proforma - {self.customer_name}"
