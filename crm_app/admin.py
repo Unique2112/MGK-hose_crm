@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import Category, Product, HoseRecord, Proforma, ProformaItem
 
-# ሎጎ እና ከለሩን ለመመለስ (Admin Customization)
+# የ CRM ስምና ሎጎ ማስተካከያ
 admin.site.site_header = "MGK Hose CRM"
 admin.site.site_title = "MGK Admin Portal"
 admin.site.index_title = "Welcome to MGK Hose CRM"
