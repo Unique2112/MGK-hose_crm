@@ -1,28 +1,8 @@
 from django.contrib import admin
-from import_export.admin import ImportExportModelAdmin
-from .models import HoseRecord, Proforma, ProformaItem, Product, Category
+from .models import Category, Product, Customer, Proforma
 
-admin.site.site_header = "MGK Hose CRM"
-
-@admin.register(HoseRecord)
-class HoseRecordAdmin(ImportExportModelAdmin):
-    list_display = ('date', 'company_name', 'status', 'unit_price')
-    search_fields = ('company_name', 'part_number')
-
-class ProformaItemInline(admin.TabularInline):
-    model = ProformaItem
-    extra = 1
-
-@admin.register(Proforma)
-class ProformaAdmin(ImportExportModelAdmin):
-    list_display = ('proforma_no', 'customer_name', 'date', 'total_amount')
-    inlines = [ProformaItemInline]
-
-@admin.register(Product)
-class ProductAdmin(ImportExportModelAdmin):
-    list_display = ('part_number', 'name', 'category', 'quantity', 'unit_price')
-    search_fields = ('name', 'part_number')
-
-@admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+# እነዚህን ሞዴሎች በ Admin Panel ላይ እንዲታዩ መመዝገብ
+admin.site.register(Category)
+admin.site.register(Product)
+admin.site.register(Customer)
+admin.site.register(Proforma)
