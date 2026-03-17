@@ -88,5 +88,5 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
-# ይህ መስመር የግድ ያስፈልጋል (Whitenoise ለ Railway)
-MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
+# ለ Railway ፍጥነት የሚረዳ
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
