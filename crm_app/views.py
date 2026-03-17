@@ -3,13 +3,13 @@ from .models import Proforma, Product, Category
 
 def dashboard(request):
     proformas = Proforma.objects.all().order_by('-id')[:5]
-    products_count = Product.objects.all().count()
-    categories_count = Category.objects.all().count()
+    products = Product.objects.all().count()
+    hoses = HoseRecord.objects.all().count() # አሁን ይሰራል!
     
     context = {
         'proformas': proformas,
-        'product_count': products_count,
-        'category_count': categories_count,
+        'product_count': products,
+        'hose_count': hoses,
     }
     return render(request, 'crm_app/dashboard.html', context)
 
