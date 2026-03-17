@@ -1,6 +1,20 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Proforma, ProformaItem
+from .models import Proforma, ProformaItem, Product, HoseRecord
 
+# 1. የዳሽቦርድ ኮድ (ይህ ስለጠፋ ነው አፑ ክራሽ ያደረገው)
+def dashboard(request):
+    proformas = Proforma.objects.all().order_by('-date')[:5]
+    products = Product.objects.all().count()
+    hoses = HoseRecord.objects.all().count()
+    
+    context = {
+        'proformas': proformas,
+        'product_count': products,
+        'hose_count': hoses,
+    }
+    return render(request, 'crm_app/dashboard.html', context)
+
+# 2. የፕሮፎርማ ህትመት ኮድ
 def print_proforma(request, pk):
     proforma = get_object_or_404(Proforma, pk=pk)
     items = ProformaItem.objects.filter(proforma=proforma)
