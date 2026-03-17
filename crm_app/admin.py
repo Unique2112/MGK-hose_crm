@@ -1,5 +1,19 @@
 from django.contrib import admin
-from .models import Category, HoseRecord, Product, Proforma
+from .models import Category, Product, HoseRecord, Proforma, ProformaItem
+
+# ሎጎ እና ከለሩን ለመመለስ (Admin Customization)
+admin.site.site_header = "MGK Hose CRM"
+admin.site.site_title = "MGK Admin Portal"
+admin.site.index_title = "Welcome to MGK Hose CRM"
+
+class ProformaItemInline(admin.TabularInline):
+    model = ProformaItem
+    extra = 1
+
+@admin.register(Proforma)
+class ProformaAdmin(admin.ModelAdmin):
+    list_display = ('customer_name', 'date', 'grand_total')
+    inlines = [ProformaItemInline]
 
 @admin.register(HoseRecord)
 class HoseRecordAdmin(admin.ModelAdmin):
@@ -8,4 +22,3 @@ class HoseRecordAdmin(admin.ModelAdmin):
 
 admin.site.register(Category)
 admin.site.register(Product)
-admin.site.register(Proforma)
