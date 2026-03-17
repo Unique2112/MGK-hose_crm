@@ -82,3 +82,11 @@ SESSION_SAVE_EVERY_REQUEST = True
 IMPORT_EXPORT_TMP_STORAGE_CLASS = 'import_export.tmp_storages.TempFolderStorage'
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 20000
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+import os
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+# ይህ መስመር የግድ ያስፈልጋል (Whitenoise ለ Railway)
+MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
