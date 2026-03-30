@@ -1,9 +1,0 @@
-django
-gunicorn
-django-crispy-forms
-crispy-bootstrap5
-python-dotenv
-django-import-export
-whitenoise
-openpyxl
-tablib[xlsx]
