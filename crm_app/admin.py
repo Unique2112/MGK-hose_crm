@@ -1,5 +1,10 @@
 from django.contrib import admin
-from .models import Category, HoseRecord, Proforma, ProformaItem
+from .models import Category, Product, HoseRecord, Proforma, ProformaItem
+
+# የ CRM ስም እና ሎጎ
+admin.site.site_header = "MGK Hose CRM"
+admin.site.site_title = "MGK Admin"
+admin.site.index_title = "Welcome to MGK Makonnen Ethiopia"
 
 class ProformaItemInline(admin.TabularInline):
     model = ProformaItem
@@ -16,3 +21,4 @@ class HoseRecordAdmin(admin.ModelAdmin):
     list_filter = ('category',)
 
 admin.site.register(Category)
+admin.site.register(Product)
